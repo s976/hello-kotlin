@@ -19,21 +19,34 @@ package adventofcode.day2
 
 import java.io.File
 
-val pattern = Regex("""(\d+)-(\d+)\s(\w):\s(\w+)""")
+class Parsed(str: String) {
+    val number1: Int
+    val number2: Int
+    val char: Char
+    val password: String
+    private val pattern = Regex("""(\d+)-(\d+)\s(\w):\s(\w+)""")
 
-fun isValid(encodedStr: String): Boolean {
-    val match = pattern.find(encodedStr)
-    if (match != null) {
-        val (minAsStr, maxAsStr, charAsStr, string) = match.destructured
-        val char = charAsStr[0]
-        val min = minAsStr.toInt()
-        val max = maxAsStr.toInt()
-        val count = string.count {it == char}
-        return count in min..max
-    } else {
-        throw IllegalArgumentException("Invalid encoded string: $encodedStr")
+    init {
+        when (val match = pattern.find(str)) {
+            null -> throw IllegalArgumentException("Invalid encoded string: $str")
+            else -> {
+                val (minAsStr, maxAsStr, charAsStr, string) = match.destructured
+                this.number1 = minAsStr.toInt()
+                this.number2 = maxAsStr.toInt()
+                this.char = charAsStr[0]
+                this.password = string
+            }
+        }
     }
 }
+
+
+fun isValid(str: String): Boolean {
+    val p = Parsed(str)
+    val count = p.password.count { it == p.char }
+    return count in p.number1..p.number2
+}
+
 
 
 fun day2Puzzle(): Int {

@@ -6,7 +6,7 @@ fun main() {
 
     // measure time
     val start = System.currentTimeMillis()
-    println( day2Puzzle() )
+    println( day2PuzzlePart2() )
     val end = System.currentTimeMillis()
     println("Execution time: ${end - start}ms")
 }
